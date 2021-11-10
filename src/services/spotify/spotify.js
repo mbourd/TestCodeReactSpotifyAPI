@@ -13,7 +13,7 @@ export default class spotify {
   getAccessToken = (client_id, client_secret) => {
     return axios.post(
       "https://accounts.spotify.com/api/token",
-      qs.stringify({ 'grant_type': 'client_credentials' }),
+      qs.stringify({ 'grant_type': 'client_credentials', 'scope': "playlist-read-private playlist-read-collaborative" }),
       {
         headers: {
           'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')),

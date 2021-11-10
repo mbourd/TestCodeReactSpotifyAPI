@@ -22,6 +22,7 @@ const App = ({ props1 }) => {
     services.spotify
       .getAccessToken("2fd2ef4d4cb14a0b8fb9e7d1546191d6", "f37c345ed51b40298b404728e775fc87")
       .then((response) => {
+        console.log(response);
         sessionStorage.setItem("access_token", response.data.access_token);
         setAccessToken(response.data.access_token);
       });
