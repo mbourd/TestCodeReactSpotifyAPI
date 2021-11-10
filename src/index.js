@@ -3,11 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { api as axiosApi } from './config/axios/api';
+import { services as Api } from './services/services';
+import rootReducer from './config/store/reducer/rootReducer';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
+export const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+export const api = axiosApi();
+export const services = new Api();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
