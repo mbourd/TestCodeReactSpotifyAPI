@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { services } from "../..";
 
-const Pagination = ({ paginationSize, listItems, setItems }) => {
+const Pagination = ({ paginationSize, listItems, setlistItems, setItems, data, setData }) => {
   useEffect(() => {
     if (listItems.length === 0) {
       [].forEach.call(document.getElementsByClassName("buttonPagination"), (element) => {
         element.classList.remove("btn-success");
       });
-    } else {
-      document.getElementsByClassName("buttonPagination")[0].classList.add("btn-success");
     }
+    // else {
+    //   document.getElementsByClassName("buttonPagination")[0].classList.add("btn-success");
+    // }
   }, [listItems]);
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -18,6 +20,23 @@ const Pagination = ({ paginationSize, listItems, setItems }) => {
     let increment = action === "next" ? 1 : -1;
 
     setItems(listItems.slice((pageNumber - 1) * paginationSize, pageNumber * paginationSize));
+  }
+
+  const getNext = () => {
+    let next = new URL(data.albums.next);
+    let searchParams = new URLSearchParams(next.search);
+
+    services.spotify
+      .searchAlbum(
+        searchParams.get("query"),
+        searchParams.get("market"),
+        searchParams.get("offset"),
+        searchParams.get("limit")
+      )
+      .then((response) => {
+        setData(response.data);
+        setlistItems(listItems.concat(response.data.albums.items));
+      });
   }
 
   return (
@@ -39,6 +58,11 @@ const Pagination = ({ paginationSize, listItems, setItems }) => {
           >{(i + 1) + " "}</Button>
         }
       })}
+      &nbsp;
+      <Button
+        className="btn-primary"
+        onClick={getNext}
+      >{">"}</Button>
     </>
   );
 };

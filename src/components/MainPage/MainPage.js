@@ -91,7 +91,10 @@ const MainPage = ({ }) => {
             <Pagination
               paginationSize={paginationSize}
               listItems={listItems}
+              setlistItems={setlistItems}
               setItems={setItems}
+              data={data}
+              setData={setData}
             />
           </Card.Footer>
         </Card>

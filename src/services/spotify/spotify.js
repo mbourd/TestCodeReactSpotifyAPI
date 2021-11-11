@@ -32,17 +32,17 @@ export default class spotify {
     );
   }
 
-  search = (query = "", market = "FR", type = "album") => {
+  search = (query = "", market = "FR", type = "album", offset = 0, limit = 20) => {
     return api.get(`search`,
       {
-        params: { q: query, type, market },
+        params: { q: query, type, market, offset, limit },
         ...this.defaultHeaders
       }
     );
   }
 
-  searchAlbum = (query = "", market = "FR") => {
-    return this.search(query, market, "album");
+  searchAlbum = (query = "", market = "FR", offset = 0, limit = 20) => {
+    return this.search(query, market, "album", offset, limit);
   }
 
   getAlbumInfo = (id) => {
