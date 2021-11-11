@@ -6,7 +6,8 @@ const SearchEngine = ({
   setSearchKeyword,
   searchAlbum,
   getPlaylists,
-  setItems }) => {
+  setItems,
+  setlistItems}) => {
   return (
     <>
       <Formik
@@ -18,6 +19,7 @@ const SearchEngine = ({
         })}
         onSubmit={async (values) => {
           setItems([]);
+          setlistItems([]);
           searchAlbum();
         }}
       >
@@ -53,6 +55,7 @@ const SearchEngine = ({
               </Col>
               <Col>
                 <Button
+                  type="submit"
                   variant="outline-info"
                   onClick={handleSubmit}
                 >Search albums</Button>

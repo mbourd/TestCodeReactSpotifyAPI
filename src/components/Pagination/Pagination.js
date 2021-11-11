@@ -1,7 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
 const Pagination = ({ paginationSize, listItems, setItems }) => {
+  useEffect(() => {
+    if (listItems.length === 0) {
+      [].forEach.call(document.getElementsByClassName("buttonPagination"), (element) => {
+        element.classList.remove("btn-success");
+      });
+    } else {
+      document.getElementsByClassName("buttonPagination")[0].classList.add("btn-success");
+    }
+  }, [listItems]);
+
   const [currentPage, setCurrentPage] = useState(0);
 
   const paginate = (action = "next", pageNumber = 0) => {

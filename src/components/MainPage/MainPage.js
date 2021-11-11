@@ -10,11 +10,11 @@ import Album from "../Album/Album";
 const MainPage = ({ }) => {
   const [accessToken, setAccessToken] = useState("");
   const [data, setData] = useState({});
-  const [items, setItems] = useState([]);
-  const [listItems, setlistItems] = useState([]);
-  const [display, setDisplay] = useState("playlists");
-  const [searchKeyword, setSearchKeyword] = useState("lyric");
-  const [paginationSize, setPaginationSize] = useState(3);
+  const [items, setItems] = useState([]); // les items qui seront affichés
+  const [listItems, setlistItems] = useState([]); // sauvegarde la liste entière des items
+  const [display, setDisplay] = useState("playlists"); // ce qu'il faut afficher
+  const [searchKeyword, setSearchKeyword] = useState("lyric"); // le mot clé a rechercher
+  const [paginationSize, setPaginationSize] = useState(3); // la taille de pagination
 
   useEffect(() => {
     services.spotify
@@ -66,6 +66,7 @@ const MainPage = ({ }) => {
                 searchAlbum={searchAlbum}
                 getPlaylists={getPlaylists}
                 setItems={setItems}
+                setlistItems={setlistItems}
               />
             </Card.Title>
             <Row>
