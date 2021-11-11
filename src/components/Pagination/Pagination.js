@@ -59,10 +59,11 @@ const Pagination = ({ paginationSize, listItems, setlistItems, setItems, data, s
         }
       })}
       &nbsp;
-      <Button
-        className="btn-primary"
-        onClick={getNext}
-      >{">"}</Button>
+      {listItems.length > 0 &&
+        <Button
+          className="btn-primary"
+          onClick={getNext}
+        >{">"}</Button>}
     </>
   );
 };
