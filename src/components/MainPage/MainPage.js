@@ -42,7 +42,6 @@ const MainPage = ({ }) => {
     services.spotify
       .searchAlbum(searchKeyword)
       .then((response) => {
-        console.log(response)
         setData(response.data);
         setItems(response.data.albums.items.slice(0, paginationSize));
         setlistItems(response.data.albums.items);
