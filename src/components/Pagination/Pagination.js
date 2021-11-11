@@ -12,8 +12,6 @@ const Pagination = ({ paginationSize, listItems, setItems }) => {
 
   return (
     <>
-      <Button
-      >{"<"}</Button>&nbsp;
       {listItems.map((item, i) => {
         if ((i + 1) * paginationSize <= listItems.length + (paginationSize % 2 === 0 ? 0 : 1)) {
           return <Button
@@ -31,8 +29,6 @@ const Pagination = ({ paginationSize, listItems, setItems }) => {
           >{(i + 1) + " "}</Button>
         }
       })}
-      &nbsp;<Button
-      >{">"}</Button>
     </>
   );
 };
