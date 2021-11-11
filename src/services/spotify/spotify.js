@@ -13,7 +13,7 @@ export default class spotify {
   getAccessToken = (client_id, client_secret) => {
     return axios.post(
       "https://accounts.spotify.com/api/token",
-      qs.stringify({ 'grant_type': 'client_credentials', 'scope': "playlist-read-private playlist-read-collaborative" }),
+      qs.stringify({ 'grant_type': 'client_credentials', 'scope': "playlist-read-private playlist-read-collaborative user-library-read" }),
       {
         headers: {
           'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')),
@@ -43,5 +43,9 @@ export default class spotify {
 
   searchAlbum = (query = "", market = "FR") => {
     return this.search(query, market, "album");
+  }
+
+  getAlbumInfo = (id) => {
+    return api.get("albums/" + id);
   }
 }

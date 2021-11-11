@@ -8,6 +8,7 @@ import { services as Api } from './services/services';
 import rootReducer from './config/store/reducer/rootReducer';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { BrowserRouter } from "react-router-dom";
 
 export const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
@@ -16,7 +17,9 @@ export const services = new Api();
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
