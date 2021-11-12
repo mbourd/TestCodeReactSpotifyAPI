@@ -1,8 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { services } from "../..";
 
-const Pagination = ({ paginationSize, listItems, setlistItems, setItems, data, setData, currentPage, setCurrentPage }) => {
+const Pagination = ({
+  paginationSize,
+  listItems,
+  setlistItems,
+  setItems,
+  data,
+  setData,
+  currentPage,
+  setCurrentPage
+}) => {
   useEffect(() => {
     if (listItems.length === 0) {
       [].forEach.call(document.getElementsByClassName("buttonPagination"), (element) => {
@@ -10,7 +19,7 @@ const Pagination = ({ paginationSize, listItems, setlistItems, setItems, data, s
       });
     }
     else {
-      if (currentPage == 1)
+      if (currentPage === 1)
         document.getElementById("buttonPagination1").classList.add("btn-success");
     }
   }, [listItems, currentPage]);
@@ -71,6 +80,8 @@ const Pagination = ({ paginationSize, listItems, setlistItems, setItems, data, s
             }}
           >{(i + 1) + " "}</Button>
         }
+
+        return (<></>);
       })}
       &nbsp;
       {listItems.length > 0 && currentPage * paginationSize < listItems.length &&

@@ -1,8 +1,5 @@
 import { Card, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { services } from "../..";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const Album = ({ album }) => {
   const navigateTo = useNavigate();

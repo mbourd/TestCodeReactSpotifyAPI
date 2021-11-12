@@ -1,4 +1,4 @@
-import { Card, Col, Row, Button, Form } from "react-bootstrap";
+import { Col, Row, Button, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { services } from "../..";

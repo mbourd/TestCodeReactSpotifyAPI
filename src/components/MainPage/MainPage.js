@@ -1,6 +1,5 @@
-import { connect } from "react-redux";
 import { useEffect, useState } from 'react';
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import { services } from '../..';
 import Pagination from "../Pagination/Pagination";
 import SearchEngine from "../Forms/SearchEngine";
@@ -24,6 +23,8 @@ const MainPage = ({ }) => {
         sessionStorage.setItem("access_token", response.data.access_token);
         setAccessToken(response.data.access_token);
       });
+
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -48,7 +49,6 @@ const MainPage = ({ }) => {
             </Card.Title>
             <Row>
               {items.map((item, index) => {
-
                 switch (display) {
                   case "playlists":
                     return <Col key={index}><Playlist playlist={item} /></Col>
@@ -58,7 +58,7 @@ const MainPage = ({ }) => {
                     break;
 
                   default:
-                    <></>
+                    return <></>
                     break;
                 }
               })}

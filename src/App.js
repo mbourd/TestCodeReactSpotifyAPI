@@ -1,14 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import { connect } from "react-redux";
-import { useEffect, useState } from 'react';
-import { services } from '.';
-import { Card, Col, Container, Row } from "react-bootstrap";
-import Playlist from './components/Playlists/Playlists';
-import Album from './components/Album/Album';
-import SearchEngine from './components/Forms/SearchEngine';
-import Pagination from './components/Pagination/Pagination';
-import MainPage from './components/MainPage/MainPage';
+import { Container, Row } from "react-bootstrap";
 import PublicRoutes from './config/route/PublicRoutes';
 
 const App = ({ props1 }) => {

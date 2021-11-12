@@ -30,6 +30,8 @@ const AlbumDetail = ({ }) => {
         setAlbumData(response.data);
         setCurrentUrlImage(response.data.images[0].url)
       })
+
+    // eslint-disable-next-line
   }, []);
 
   const backMain = () => {
