@@ -4,8 +4,9 @@ import { useMatch } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { services } from "../..";
 import dayjs from "dayjs";
+import { connect } from "react-redux";
 
-const AlbumDetail = ({ }) => {
+const AlbumDetail = ({ global }) => {
   const navigateTo = useNavigate();
   const match = useMatch("/album/:id");
   const [currentAudio, setCurrentAudio] = useState(new Audio());
@@ -91,4 +92,9 @@ const AlbumDetail = ({ }) => {
   )
 };
 
-export default AlbumDetail;
+
+const mapStateToProps = (state) => {
+  return {global : state.global }
+}
+
+export default connect(mapStateToProps)(AlbumDetail);

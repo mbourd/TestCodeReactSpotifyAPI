@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Card, Col, Row } from "react-bootstrap";
-import { services } from '../..';
+import { services, store } from '../..';
 import Pagination from "../Pagination/Pagination";
 import SearchEngine from "../Forms/SearchEngine";
 import Playlist from "../Playlists/Playlists";
 import Album from "../Album/Album";
+import { connect } from 'react-redux';
 
-const MainPage = ({ }) => {
+const MainPage = ({ global }) => {
   const [accessToken, setAccessToken] = useState("");
   const [data, setData] = useState({});
   const [items, setItems] = useState([]); // les items qui seront affichés
   const [listItems, setlistItems] = useState([]); // sauvegarde la liste entière des items
   const [display, setDisplay] = useState("playlists"); // ce qu'il faut afficher
   const [paginationSize, setPaginationSize] = useState(3); // la taille de pagination
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     services.spotify
@@ -24,8 +25,37 @@ const MainPage = ({ }) => {
         setAccessToken(response.data.access_token);
       });
 
+    if (global.hasOwnProperty("items")) {
+      setItems(global.items)
+    }
+    if (global.hasOwnProperty("data")) {
+      setData(global.data)
+    }
+    if (global.hasOwnProperty("display")) {
+      setDisplay(global.display);
+    }
+    if (global.hasOwnProperty("currentPage")) {
+      setCurrentPage(global.currentPage);
+    }
+    if (global.hasOwnProperty("listItems")) {
+      setlistItems(global.listItems);
+    }
+
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    store.dispatch({
+      type: "REPLACE_GLOBAL", value:
+      {
+        items,
+        listItems,
+        display,
+        currentPage,
+        data,
+      }
+    })
+  }, [items,listItems, display, currentPage, data])
 
   return (
     <>
@@ -83,4 +113,8 @@ const MainPage = ({ }) => {
   )
 };
 
-export default MainPage;
+const mapStateToProps = (state) => {
+  return { global: state.global }
+}
+
+export default connect(mapStateToProps)(MainPage);

@@ -18,10 +18,9 @@ const Pagination = ({
         element.classList.remove("btn-success");
       });
     }
-    else {
-      if (currentPage === 1)
-        document.getElementById("buttonPagination1").classList.add("btn-success");
-    }
+    try {
+      document.getElementById("buttonPagination" + currentPage).classList.add("btn-success");
+    } catch (error) { }
   }, [listItems, currentPage]);
 
   const paginate = (action = "next", pageNumber = 0) => {
@@ -39,25 +38,26 @@ const Pagination = ({
       element.classList.remove("btn-success");
     })
 
-    document.getElementById("buttonPagination" + pageNumber).classList.remove("outline-secondary");
     document.getElementById("buttonPagination" + pageNumber).classList.add("btn-success");
   }
 
   const getNext = () => {
-    let next = new URL(data.albums.next);
-    let searchParams = new URLSearchParams(next.search);
+    try {
+      let next = new URL(data.albums.next);
+      let searchParams = new URLSearchParams(next.search);
 
-    services.spotify
-      .searchAlbum(
-        searchParams.get("query"),
-        searchParams.get("market"),
-        searchParams.get("offset"),
-        searchParams.get("limit")
-      )
-      .then((response) => {
-        setData(response.data);
-        setlistItems(listItems.concat(response.data.albums.items));
-      });
+      services.spotify
+        .searchAlbum(
+          searchParams.get("query"),
+          searchParams.get("market"),
+          searchParams.get("offset"),
+          searchParams.get("limit")
+        )
+        .then((response) => {
+          setData(response.data);
+          setlistItems(listItems.concat(response.data.albums.items));
+        });
+    } catch (error) { }
   }
 
   return (
