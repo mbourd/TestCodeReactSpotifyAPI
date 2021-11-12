@@ -21,6 +21,8 @@ const Pagination = ({
     try {
       document.getElementById("buttonPagination" + currentPage).classList.add("btn-success");
     } catch (error) { }
+
+    setItems(listItems.slice((currentPage - 1) * paginationSize, currentPage * paginationSize));
   }, [listItems, currentPage]);
 
   const paginate = (action = "next", pageNumber = 0) => {
