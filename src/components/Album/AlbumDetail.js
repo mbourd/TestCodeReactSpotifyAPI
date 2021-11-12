@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 const AlbumDetail = ({ }) => {
   const navigateTo = useNavigate();
   const match = useMatch("/album/:id");
+  const [currentAudio, setCurrentAudio] = useState(new Audio());
   const [albumData, setAlbumData] = useState(
     // on peut aussi le mettre sous form de class model / entité
     {
@@ -15,7 +16,8 @@ const AlbumDetail = ({ }) => {
       artists: [{ name: "" }],
       release_date: "",
       popularity: 0,
-      total_tracks: 0
+      total_tracks: 0,
+      tracks: { items: [] },
     }
   );
   const [currentUrlImage, setCurrentUrlImage] = useState("");
@@ -24,6 +26,7 @@ const AlbumDetail = ({ }) => {
     services.spotify
       .getAlbumInfo(match.params.id)
       .then((response) => {
+        console.log(response.data)
         setAlbumData(response.data);
         setCurrentUrlImage(response.data.images[0].url)
       })
@@ -31,6 +34,13 @@ const AlbumDetail = ({ }) => {
 
   const backMain = () => {
     navigateTo("/");
+  }
+
+  const playPreview = (track) => (event) => {
+    let audio = new Audio(track.preview_url);
+    currentAudio.pause();
+    setCurrentAudio(audio);
+    audio.play();
   }
 
   return (
@@ -51,6 +61,13 @@ const AlbumDetail = ({ }) => {
               <Card.Text>Date de sortie : {dayjs(albumData.release_date).format("DD/MM/YYYY")}</Card.Text>
               <Card.Text>Popularité : {albumData.popularity}/100</Card.Text>
               <Card.Text>Total chanson : {albumData.total_tracks}</Card.Text>
+              <Row>
+                {albumData.tracks.items.map((track, index) => {
+                  return <Col>
+                    {track.name + " "} <Button onClick={playPreview(track)} variant="outline-primary">Preview</Button>
+                  </Col>
+                })}
+              </Row>
             </Card.Body>
             <Card.Footer>
               <Button
