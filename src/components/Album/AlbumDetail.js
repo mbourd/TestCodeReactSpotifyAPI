@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Row, Col, Button } from "react-bootstrap";
+import { Card, Row, Col, Button, ListGroup } from "react-bootstrap";
 import { useMatch } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { services } from "../..";
@@ -62,11 +62,18 @@ const AlbumDetail = ({ }) => {
               <Card.Text>Popularité : {albumData.popularity}/100</Card.Text>
               <Card.Text>Total chanson : {albumData.total_tracks}</Card.Text>
               <Row>
-                {albumData.tracks.items.map((track, index) => {
-                  return <Col>
-                    {track.name + " "} <Button onClick={playPreview(track)} variant="outline-primary">Preview</Button>
-                  </Col>
-                })}
+                <ListGroup variant="flush">
+                  {albumData.tracks.items.map((track, index) => {
+                    return (
+                      <ListGroup.Item key={index}>
+                        <Row>
+                          <Col>{track.name + " "}</Col>
+                          {track.preview_url && <Col><Button onClick={playPreview(track)} variant="outline-primary">Preview</Button></Col>}
+                        </Row>
+                      </ListGroup.Item>
+                    )
+                  })}
+                </ListGroup>
               </Row>
             </Card.Body>
             <Card.Footer>
