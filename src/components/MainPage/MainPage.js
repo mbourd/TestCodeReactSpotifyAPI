@@ -13,8 +13,8 @@ const MainPage = ({ }) => {
   const [items, setItems] = useState([]); // les items qui seront affichés
   const [listItems, setlistItems] = useState([]); // sauvegarde la liste entière des items
   const [display, setDisplay] = useState("playlists"); // ce qu'il faut afficher
-  const [searchKeyword, setSearchKeyword] = useState("lyric"); // le mot clé a rechercher
   const [paginationSize, setPaginationSize] = useState(3); // la taille de pagination
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     services.spotify
@@ -25,30 +25,6 @@ const MainPage = ({ }) => {
         setAccessToken(response.data.access_token);
       });
   }, []);
-
-  const getPlaylists = () => {
-    services.spotify
-      .getMyPlaylists()
-      .then((response) => {
-        setData(response.data);
-        setItems(response.data.items.slice(0, paginationSize));
-        setlistItems(response.data.items);
-        setDisplay("playlists");
-      })
-      .catch((error) => { console.log(error) });
-  }
-
-  const searchAlbum = () => {
-    services.spotify
-      .searchAlbum(searchKeyword)
-      .then((response) => {
-        setData(response.data);
-        setItems(response.data.albums.items.slice(0, paginationSize));
-        setlistItems(response.data.albums.items);
-        setDisplay("albums");
-      })
-      .catch((error) => { console.log(error) });
-  }
 
   return (
     <>
@@ -62,11 +38,12 @@ const MainPage = ({ }) => {
             <Card.Title>
               {/* Search Engine */}
               <SearchEngine
-                setSearchKeyword={setSearchKeyword}
-                searchAlbum={searchAlbum}
-                getPlaylists={getPlaylists}
                 setItems={setItems}
                 setlistItems={setlistItems}
+                setData={setData}
+                setCurrentPage={setCurrentPage}
+                paginationSize={paginationSize}
+                setDisplay={setDisplay}
               />
             </Card.Title>
             <Row>
@@ -95,6 +72,8 @@ const MainPage = ({ }) => {
               setItems={setItems}
               data={data}
               setData={setData}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           </Card.Footer>
         </Card>

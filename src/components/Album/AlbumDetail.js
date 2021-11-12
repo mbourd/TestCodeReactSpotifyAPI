@@ -68,7 +68,7 @@ const AlbumDetail = ({ }) => {
                       <ListGroup.Item key={index}>
                         <Row>
                           <Col>{track.name + " "}</Col>
-                          {track.preview_url && <Col><Button onClick={playPreview(track)} variant="outline-primary">Preview</Button></Col>}
+                          <Col><Button onClick={playPreview(track)} variant="outline-primary" disabled={!track.preview_url}>Preview</Button></Col>
                         </Row>
                       </ListGroup.Item>
                     )

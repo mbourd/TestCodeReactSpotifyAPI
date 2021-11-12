@@ -1,13 +1,45 @@
 import { Card, Col, Row, Button, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { services } from "../..";
+import { useState } from "react";
 
 const SearchEngine = ({
-  setSearchKeyword,
-  searchAlbum,
-  getPlaylists,
   setItems,
-  setlistItems}) => {
+  setlistItems,
+  setData,
+  setDisplay,
+  setCurrentPage,
+  paginationSize,
+}) => {
+  const [searchKeyword, setSearchKeyword] = useState("lyric"); // le mot clé a rechercher
+
+  const getPlaylists = () => {
+    services.spotify
+      .getMyPlaylists()
+      .then((response) => {
+        setData(response.data);
+        setItems(response.data.items.slice(0, paginationSize));
+        setlistItems(response.data.items);
+        setDisplay("playlists");
+        setCurrentPage(1);
+      })
+      .catch((error) => { console.log(error) });
+  }
+
+  const searchAlbum = () => {
+    services.spotify
+      .searchAlbum(searchKeyword)
+      .then((response) => {
+        setData(response.data);
+        setItems(response.data.albums.items.slice(0, paginationSize));
+        setlistItems(response.data.albums.items);
+        setDisplay("albums");
+        setCurrentPage(1);
+      })
+      .catch((error) => { console.log(error) });
+  }
+
   return (
     <>
       <Formik
