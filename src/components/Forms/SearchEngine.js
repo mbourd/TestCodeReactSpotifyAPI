@@ -14,6 +14,7 @@ const SearchEngine = ({
 }) => {
   const [searchKeyword, setSearchKeyword] = useState("lyric"); // le mot clé a rechercher
 
+  // Méthode pour récuprer les playlists
   const getPlaylists = () => {
     services.spotify
       .getMyPlaylists()
@@ -27,6 +28,7 @@ const SearchEngine = ({
       .catch((error) => { console.log(error) });
   }
 
+  // Méthode pour récuprer une liste d'album en fonction du mot clé saisie
   const searchAlbum = () => {
     services.spotify
       .searchAlbum(searchKeyword)
@@ -43,12 +45,17 @@ const SearchEngine = ({
   return (
     <>
       <Formik
+        // Valeurs initiales
         initialValues={{
           keyword: ""
         }}
+
+        // Vérification pour les champs
         validationSchema={() => Yup.object().shape({
           keyword: Yup.string().required("Veuillez saisir un mot clé")
         })}
+
+        // Lors du submit
         onSubmit={async (values) => {
           setItems([]);
           setlistItems([]);

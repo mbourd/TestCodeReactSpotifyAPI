@@ -16,6 +16,7 @@ const MainPage = ({ global }) => {
   const [paginationSize, setPaginationSize] = useState(3); // la taille de pagination
   const [currentPage, setCurrentPage] = useState(0);
 
+  // Récupère le token, puis remet les valeurs des states
   useEffect(() => {
     services.spotify
       .getAccessToken("2fd2ef4d4cb14a0b8fb9e7d1546191d6", "f37c345ed51b40298b404728e775fc87")
@@ -25,6 +26,7 @@ const MainPage = ({ global }) => {
         setAccessToken(response.data.access_token);
       });
 
+    /** Remet les valeurs comme avant */
     if (global.hasOwnProperty("items")) {
       setItems(global.items)
     }
@@ -44,6 +46,9 @@ const MainPage = ({ global }) => {
     // eslint-disable-next-line
   }, []);
 
+  // Met à jour la state global
+  // Par exemple lors de la navigation vers la page de détail de l'album
+  // Puis reviens sur MainPage
   useEffect(() => {
     store.dispatch({
       type: "REPLACE_GLOBAL", value:
@@ -95,6 +100,7 @@ const MainPage = ({ global }) => {
             </Row>
           </Card.Body>
           <Card.Footer>
+            {/** Pagination */}
             <Pagination
               paginationSize={paginationSize}
               listItems={listItems}
@@ -104,6 +110,7 @@ const MainPage = ({ global }) => {
               setData={setData}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              display={display}
             />
           </Card.Footer>
         </Card>

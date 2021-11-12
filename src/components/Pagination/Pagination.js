@@ -10,21 +10,29 @@ const Pagination = ({
   data,
   setData,
   currentPage,
-  setCurrentPage
+  setCurrentPage,
+  display,
 }) => {
   useEffect(() => {
-    if (listItems.length === 0) {
+    // Néttoie le style du focus de la pagination
+    try {
       [].forEach.call(document.getElementsByClassName("buttonPagination"), (element) => {
         element.classList.remove("btn-success");
       });
-    }
+    } catch (error) { }
+
+    // Ajoute un style pour le focus de pagination
     try {
       document.getElementById("buttonPagination" + currentPage).classList.add("btn-success");
     } catch (error) { }
 
-    setItems(listItems.slice((currentPage - 1) * paginationSize, currentPage * paginationSize));
+    // Reupdate les items a afficher quand la liste entiere à été modifié
+    try {
+      paginate(null, currentPage);
+    } catch (error) { }
   }, [listItems, currentPage]);
 
+  // Méthode pour paginer précèdent pour suivant, ou directement sur la page choisie
   const paginate = (action = "next", pageNumber = 0) => {
     let increment = 0;
 
@@ -36,14 +44,11 @@ const Pagination = ({
     setCurrentPage(pageNumber);
     setItems(listItems.slice((pageNumber - 1) * paginationSize, pageNumber * paginationSize));
 
-    [].forEach.call(document.getElementsByClassName("buttonPagination"), (element) => {
-      element.classList.remove("btn-success");
-    })
-
     document.getElementById("buttonPagination" + pageNumber).classList.add("btn-success");
   }
 
-  const getNext = () => {
+  // Méthode pour récuprer la liste suivante (pour albums seulement)
+  const getNextResultsAlbums = () => {
     try {
       let next = new URL(data.albums.next);
       let searchParams = new URLSearchParams(next.search);
@@ -77,9 +82,7 @@ const Pagination = ({
             id={"buttonPagination" + (i + 1)}
             className="buttonPagination"
             variant="outline-secondary"
-            onClick={(e) => {
-              paginate(null, i + 1);
-            }}
+            onClick={(e) => { paginate(null, i + 1); }}
           >{(i + 1) + " "}</Button>
         }
 
@@ -93,10 +96,10 @@ const Pagination = ({
         >{">"}</Button>
       }
       &nbsp;
-      {listItems.length > 0 &&
+      {listItems.length > 0 && display === "albums" &&
         <Button
           className="btn-primary"
-          onClick={getNext}
+          onClick={getNextResultsAlbums}
         >{"liste suivante"}</Button>}
     </>
   );

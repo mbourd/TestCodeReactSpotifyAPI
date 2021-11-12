@@ -23,6 +23,7 @@ const AlbumDetail = ({ global }) => {
   );
   const [currentUrlImage, setCurrentUrlImage] = useState("");
 
+  // Récupère les informations de l'album, lorsque le component a été monté
   useEffect(() => {
     services.spotify
       .getAlbumInfo(match.params.id)
@@ -35,13 +36,20 @@ const AlbumDetail = ({ global }) => {
     // eslint-disable-next-line
   }, []);
 
+  // Methode pour revenir sur la page principate
   const backMain = () => {
     navigateTo("/");
   }
 
+  // Méthode pour ecouter un apercu de la musique
   const playPreview = (track) => (event) => {
     let audio = new Audio(track.preview_url);
+
+    /** Stop la musique en cours */
     currentAudio.pause();
+    currentAudio.currentTime = 0; // Remet la position à 0
+
+    /** Joue la nouvelle musique */
     setCurrentAudio(audio);
     audio.play();
   }

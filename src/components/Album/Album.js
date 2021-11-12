@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const Album = ({ album }) => {
   const navigateTo = useNavigate();
+
+  // Méthode pour naviguer sur la page de détail de l'album
   const redirectToAlbumDetail = () => {
     navigateTo("/album/" + album.id);
   }
