@@ -43,8 +43,6 @@ const Pagination = ({
 
     setCurrentPage(pageNumber);
     setItems(listItems.slice((pageNumber - 1) * paginationSize, pageNumber * paginationSize));
-
-    document.getElementById("buttonPagination" + pageNumber).classList.add("btn-success");
   }
 
   // Méthode pour récuprer la liste suivante (pour albums seulement)
@@ -75,19 +73,17 @@ const Pagination = ({
           onClick={() => (paginate("prev"))}
         >{"<"}</Button>}
       &nbsp;
-      {listItems.map((item, i) => {
-        if ((i + 1) * paginationSize <= listItems.length + (paginationSize % 2 === 0 ? 0 : 2)) {
+      {
+        [...Array(Math.ceil(listItems.length / paginationSize)).keys()].map((v, i) => {
           return <Button
-            key={i}
+            key={i + 1}
             id={"buttonPagination" + (i + 1)}
             className="buttonPagination"
             variant="outline-secondary"
             onClick={(e) => { paginate(null, i + 1); }}
           >{(i + 1) + " "}</Button>
-        }
-
-        return (<></>);
-      })}
+        })
+      }
       &nbsp;
       {listItems.length > 0 && currentPage * paginationSize < listItems.length &&
         <Button
