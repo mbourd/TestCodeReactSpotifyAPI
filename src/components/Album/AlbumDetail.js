@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, Row, Col, Button, ListGroup } from "react-bootstrap";
-import { useMatch } from "react-router";
+import { useMatch, useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { services } from "../..";
 import dayjs from "dayjs";
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 
 const AlbumDetail = ({ global }) => {
   const navigateTo = useNavigate();
-  const match = useMatch("/album/:id");
+  const { id } = useParams();
   const [currentAudio, setCurrentAudio] = useState(new Audio());
   const [albumData, setAlbumData] = useState(
     // on peut aussi le mettre sous form de class model / entité
@@ -26,7 +26,7 @@ const AlbumDetail = ({ global }) => {
   // Récupère les informations de l'album, lorsque le component a été monté
   useEffect(() => {
     services.spotify
-      .getAlbumInfo(match.params.id)
+      .getAlbumInfo(id)
       .then((response) => {
         console.log(response.data)
         setAlbumData(response.data);
@@ -102,7 +102,7 @@ const AlbumDetail = ({ global }) => {
 
 
 const mapStateToProps = (state) => {
-  return {global : state.global }
+  return { global: state.global }
 }
 
 export default connect(mapStateToProps)(AlbumDetail);

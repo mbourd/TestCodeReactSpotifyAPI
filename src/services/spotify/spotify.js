@@ -1,6 +1,7 @@
 import axios from "axios"
-import { api } from "../.."
+import { api, services } from "../.."
 import qs from "qs"
+import { environnement } from "../../config/environnement/environnement"
 
 export default class spotify {
   defaultHeaders = {
@@ -10,10 +11,10 @@ export default class spotify {
     }
   }
 
-  getAccessToken = (client_id, client_secret) => {
+  getAccessToken = (client_id, client_secret, spotify_code, redirect_uri) => {
     return axios.post(
       "https://accounts.spotify.com/api/token",
-      qs.stringify({ 'grant_type': 'client_credentials', 'scope': "playlist-read-private playlist-read-collaborative user-library-read" }),
+      qs.stringify({ 'grant_type': 'authorization_code', 'code' : spotify_code, 'redirect_uri' : redirect_uri }),
       {
         headers: {
           'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')),
@@ -47,5 +48,15 @@ export default class spotify {
 
   getAlbumInfo = (id) => {
     return api.get("albums/" + id);
+  }
+
+  redirectToAuthorize = (client_id, scope = "playlist-read-private playlist-read-collaborative user-library-read") => {
+    window.location.href = "https://accounts.spotify.com/authorize?" + qs.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: environnement.redirectUri,
+      state: services.customMethod.makeID(15)
+    });
   }
 }

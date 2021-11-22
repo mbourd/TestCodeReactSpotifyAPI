@@ -6,26 +6,21 @@ import SearchEngine from "../Forms/SearchEngine";
 import Playlist from "../Playlists/Playlists";
 import Album from "../Album/Album";
 import { connect } from 'react-redux';
+import qs from "qs"
+import { environnement } from '../../config/environnement/environnement';
 
 const MainPage = ({ global }) => {
+  const [spotify_code] = useState(new URLSearchParams(window.location.search).get("code"));
   const [accessToken, setAccessToken] = useState("");
   const [data, setData] = useState({});
   const [items, setItems] = useState([]); // les items qui seront affichés
   const [listItems, setlistItems] = useState([]); // sauvegarde la liste entière des items
-  const [display, setDisplay] = useState("playlists"); // ce qu'il faut afficher
+  const [display, setDisplay] = useState(""); // ce qu'il faut afficher
   const [paginationSize, setPaginationSize] = useState(3); // la taille de pagination
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Récupère le token, puis remet les valeurs des states
   useEffect(() => {
-    services.spotify
-      .getAccessToken("2fd2ef4d4cb14a0b8fb9e7d1546191d6", "f37c345ed51b40298b404728e775fc87")
-      .then((response) => {
-        console.log(response);
-        sessionStorage.setItem("access_token", response.data.access_token);
-        setAccessToken(response.data.access_token);
-      });
-
     /** Remet les valeurs comme avant */
     if (global.hasOwnProperty("items")) {
       setItems(global.items)
@@ -41,6 +36,29 @@ const MainPage = ({ global }) => {
     }
     if (global.hasOwnProperty("listItems")) {
       setlistItems(global.listItems);
+    }
+
+    if (spotify_code) {
+      sessionStorage.setItem("spotify_code", spotify_code);
+    }
+
+    if (!sessionStorage.hasOwnProperty("spotify_code") || !sessionStorage.getItem("spotify_code")) {
+      services.spotify.redirectToAuthorize(environnement.clientId);
+    } else {
+      if (!sessionStorage.getItem("access_token")) {
+        services.spotify
+          .getAccessToken(
+            environnement.clientId,
+            environnement.clientSecret,
+            sessionStorage.getItem("spotify_code"),
+            environnement.redirectUri
+          )
+          .then((response) => {
+            sessionStorage.setItem("access_token", response.data.access_token);
+            setAccessToken(response.data.access_token);
+          })
+          .catch((error) => console.log(error));
+      }
     }
 
     // eslint-disable-next-line
@@ -60,7 +78,7 @@ const MainPage = ({ global }) => {
         data,
       }
     })
-  }, [items,listItems, display, currentPage, data])
+  }, [items, listItems, display, currentPage, data])
 
   return (
     <>

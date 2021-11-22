@@ -19,11 +19,11 @@ const SearchEngine = ({
     services.spotify
       .getMyPlaylists()
       .then((response) => {
+        setDisplay("playlists");
+        setCurrentPage(1);
         setData(response.data);
         setItems(response.data.items.slice(0, paginationSize));
         setlistItems(response.data.items);
-        setDisplay("playlists");
-        setCurrentPage(1);
       })
       .catch((error) => { console.log(error) });
   }
@@ -33,11 +33,11 @@ const SearchEngine = ({
     services.spotify
       .searchAlbum(searchKeyword)
       .then((response) => {
+        setDisplay("albums");
+        setCurrentPage(1);
         setData(response.data);
         setItems(response.data.albums.items.slice(0, paginationSize));
         setlistItems(response.data.albums.items);
-        setDisplay("albums");
-        setCurrentPage(1);
       })
       .catch((error) => { console.log(error) });
   }

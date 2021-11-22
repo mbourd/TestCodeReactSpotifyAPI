@@ -1,5 +1,6 @@
 
 import Axios from "axios";
+import { services } from "../..";
 import { environnement } from "../environnement/environnement";
 
 export const api = () => {
@@ -16,12 +17,28 @@ export const api = () => {
       ...request, headers: {
         ...request.headers,
         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
-        // "Authorization": "Bearer BQAP-p4pDpLXQVWhwyGYYUvLYQmUzol2GfjJcl3nIRXtg0z84yp6a5MB9gqsEqRug-4LTVLw4INtv0YYDy0udrNCfg663fFV8vBKzsaC-Hm4SJI4h5HL-AuxqdjemO12HqSRLeSFbqWxQUmMFwAiInJ9Hu0",
       }
     }
 
     return _request;
-  })
+  });
+
+  //Response interceptor
+  axios.interceptors.response.use((response) => response, error => {
+    if (error.response.status === 401) {
+      services.spotify
+        .getAccessToken(
+          environnement.clientId,
+          environnement.clientSecret,
+          sessionStorage.getItem("spotify_code"),
+          environnement.redirectUri
+        )
+        .then((response) => {
+          sessionStorage.setItem("access_token", response.data.access_token);
+        })
+        .catch((error) => console.log(error));
+    }
+  });
 
   return axios;
 }
