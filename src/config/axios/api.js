@@ -34,7 +34,6 @@ export const api = () => {
         )
         .then((response) => {
           sessionStorage.setItem("access_token", response.data.access_token);
-          sessionStorage.setItem("refresh_token", response.data.refresh_token);
         })
         .catch((error) => console.log(error));
     }
