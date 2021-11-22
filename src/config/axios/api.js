@@ -27,14 +27,14 @@ export const api = () => {
   axios.interceptors.response.use((response) => response, error => {
     if (error.response.status === 401) {
       services.spotify
-        .getAccessToken(
+        .refreshAccessToken(
           environnement.clientId,
           environnement.clientSecret,
-          sessionStorage.getItem("spotify_code"),
-          environnement.redirectUri
+          sessionStorage.getItem("refresh_token")
         )
         .then((response) => {
           sessionStorage.setItem("access_token", response.data.access_token);
+          sessionStorage.setItem("refresh_token", response.data.refresh_token);
         })
         .catch((error) => console.log(error));
     }

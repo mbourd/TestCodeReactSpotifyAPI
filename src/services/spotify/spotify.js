@@ -14,7 +14,20 @@ export default class spotify {
   getAccessToken = (client_id, client_secret, spotify_code, redirect_uri) => {
     return axios.post(
       "https://accounts.spotify.com/api/token",
-      qs.stringify({ 'grant_type': 'authorization_code', 'code' : spotify_code, 'redirect_uri' : redirect_uri }),
+      qs.stringify({ 'grant_type': 'authorization_code', 'code': spotify_code, 'redirect_uri': redirect_uri }),
+      {
+        headers: {
+          'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    );
+  }
+
+  refreshAccessToken = (client_id, client_secret, refresh_token) => {
+    return axios.post(
+      "https://accounts.spotify.com/api/token",
+      qs.stringify({ 'grant_type': 'refresh_token', 'refresh_token': refresh_token }),
       {
         headers: {
           'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')),
