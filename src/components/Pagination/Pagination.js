@@ -4,14 +4,14 @@ import { services } from "../..";
 
 const Pagination = ({
   paginationSize,
-  listItems,
+  listItems, // list de tout les items "albums"
   setlistItems,
-  setItems,
-  data,
+  setItems, // list des albums a afficher
+  data, // informations de l'album
   setData,
   currentPage,
   setCurrentPage,
-  display,
+  display, // afficher les albums ou playlists
 }) => {
   useEffect(() => {
     // Néttoie le style du focus de la pagination
@@ -32,7 +32,7 @@ const Pagination = ({
     } catch (error) { }
   }, [listItems, currentPage]);
 
-  // Méthode pour paginer précèdent pour suivant, ou directement sur la page choisie
+  // Méthode pour paginer précèdent ou suivant, ou directement sur la page choisie
   const paginate = (action = "next", pageNumber = 0) => {
     let increment = 0;
 
