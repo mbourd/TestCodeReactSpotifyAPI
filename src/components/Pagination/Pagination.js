@@ -14,23 +14,11 @@ const Pagination = ({
   display, // afficher les albums ou playlists
 }) => {
   useEffect(() => {
-    // Néttoie le style du focus de la pagination
-    try {
-      [].forEach.call(document.getElementsByClassName("buttonPagination"), (element) => {
-        element.classList.remove("btn-success");
-      });
-    } catch (error) { }
-
-    // Ajoute un style pour le focus de pagination
-    try {
-      document.getElementById("buttonPagination" + currentPage).classList.add("btn-success");
-    } catch (error) { }
-
-    // Reupdate les items a afficher quand la liste entiere à été modifié
+    // Reupdate les items a afficher quand le numéro de la page est modifié
     try {
       paginate(null, currentPage);
     } catch (error) { }
-  }, [listItems, currentPage]);
+  }, [currentPage]);
 
   // Méthode pour paginer précèdent ou suivant, ou directement sur la page choisie
   const paginate = (action = "next", pageNumber = 0) => {
@@ -60,7 +48,7 @@ const Pagination = ({
         )
         .then((response) => {
           setData(response.data);
-          setlistItems(listItems.concat(response.data.albums.items));
+          setlistItems([...listItems, ...response.data.albums.items]);
         });
     } catch (error) { }
   }
@@ -78,7 +66,7 @@ const Pagination = ({
           return <Button
             key={i + 1}
             id={"buttonPagination" + (i + 1)}
-            className="buttonPagination"
+            className={"buttonPagination " + (currentPage - 1 == i ? "btn-success" : "")}
             variant="outline-secondary"
             onClick={(e) => { paginate(null, i + 1); }}
           >{(i + 1) + " "}</Button>

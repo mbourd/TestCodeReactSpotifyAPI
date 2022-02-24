@@ -18,7 +18,9 @@ const Album = ({ album }) => {
             {/* <Card.Title>{album.name} - <Link to={"./album/" + album.id}>detail</Link></Card.Title> */}
             <Card.Title>{album.name} - <a href="#" onClick={redirectToAlbumDetail}>detail</a></Card.Title>
             <Card.Text>
-              Artiste : {album.artists.map((artist, i) => (artist.name + (album.artists.length < i ? ", " : "")))}
+              Artiste : {album.artists.map((artist, i) => (
+                artist.name + (i < album.artists.length - 1 ? ", " : ""))
+              )}
             </Card.Text>
           </Card.Body>
         </Card>
