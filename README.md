@@ -14,6 +14,7 @@ This application allows:
 
 To search for albums by keyword in the Spotify catalog and to display the results in the form of a list by managing the pagination. Provide for the recovery of the user token to make requests to the API (Spotify documentation: https://developer.spotify.com/documentation/general/guides/authorization-guide/).
 And, from an album of this list, to display an album on a dedicated page with a free layout
+
 Spotify API: https://developer.spotify.com/documentation/web-api/reference-beta/
 
 Spotify Authorization guide: https://developer.spotify.com/documentation/general/guides/authorization-guide/
@@ -39,7 +40,7 @@ Spotify Authorization guide :
 https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 Découpage en composant:
-    - Moteur de recherche
-    - Pagination
-    - Les informations de l'album
-    - Route qui mène aux informations de l'album
+- Moteur de recherche
+- Pagination
+- Les informations de l'album
+- Route qui mène aux informations de l'album
