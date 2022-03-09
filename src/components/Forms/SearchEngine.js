@@ -2,16 +2,11 @@ import { Col, Row, Button, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { services } from "../..";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ContextMainPage } from "../MainPage/MainPage";
 
-const SearchEngine = ({
-  setItems,
-  setlistItems,
-  setData,
-  setDisplay,
-  setCurrentPage,
-  paginationSize,
-}) => {
+const SearchEngine = ({ }) => {
+  const contextMainPageValue = useContext(ContextMainPage);
   const [searchKeyword, setSearchKeyword] = useState("lyric"); // le mot clé a rechercher
 
   // Méthode pour récuprer les playlists
@@ -19,11 +14,11 @@ const SearchEngine = ({
     services.spotify
       .getMyPlaylists()
       .then((response) => {
-        setDisplay("playlists");
-        setCurrentPage(1);
-        setData(response.data);
-        setItems(response.data.items.slice(0, paginationSize));
-        setlistItems(response.data.items);
+        contextMainPageValue.setDisplay("playlists");
+        contextMainPageValue.setCurrentPage(1);
+        contextMainPageValue.setData(response.data);
+        contextMainPageValue.setItems(response.data.items.slice(0, contextMainPageValue.paginationSize));
+        contextMainPageValue.setlistItems(response.data.items);
       })
       .catch((error) => { console.log(error) });
   }
@@ -33,11 +28,11 @@ const SearchEngine = ({
     services.spotify
       .searchAlbum(searchKeyword)
       .then((response) => {
-        setDisplay("albums");
-        setCurrentPage(1);
-        setData(response.data);
-        setItems(response.data.albums.items.slice(0, paginationSize));
-        setlistItems(response.data.albums.items);
+        contextMainPageValue.setDisplay("albums");
+        contextMainPageValue.setCurrentPage(1);
+        contextMainPageValue.setData(response.data);
+        contextMainPageValue.setItems(response.data.albums.items.slice(0, contextMainPageValue.paginationSize));
+        contextMainPageValue.setlistItems(response.data.albums.items);
       })
       .catch((error) => { console.log(error) });
   }
@@ -57,8 +52,8 @@ const SearchEngine = ({
 
         // Lors du submit
         onSubmit={async (values) => {
-          setItems([]);
-          setlistItems([]);
+          contextMainPageValue.setItems([]);
+          contextMainPageValue.setlistItems([]);
           searchAlbum();
         }}
       >

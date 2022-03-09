@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { Card, Col, Row } from "react-bootstrap";
 import { services, store } from '../..';
 import Pagination from "../Pagination/Pagination";
@@ -9,10 +9,12 @@ import { connect } from 'react-redux';
 import qs from "qs"
 import { environnement } from '../../config/environnement/environnement';
 
+export const ContextMainPage = createContext();
+
 const MainPage = ({ global }) => {
   const [spotify_code] = useState(new URLSearchParams(window.location.search).get("code"));
   const [accessToken, setAccessToken] = useState("");
-  const [data, setData] = useState({});
+  const [data, setData] = useState({}); // Album data
   const [items, setItems] = useState([]); // les items qui seront affichés
   const [listItems, setlistItems] = useState([]); // sauvegarde la liste entière des items
   const [display, setDisplay] = useState(""); // ce qu'il faut afficher
@@ -82,7 +84,7 @@ const MainPage = ({ global }) => {
   }, [items, listItems, display, currentPage, data])
 
   return (
-    <>
+    <ContextMainPage.Provider value={{items, setItems, listItems, setlistItems, data, setData, currentPage, setCurrentPage, paginationSize, display, setDisplay}}>
       <Col></Col>
       <Col xs={6}>
         <Card>
@@ -92,14 +94,7 @@ const MainPage = ({ global }) => {
           <Card.Body>
             <Card.Title>
               {/* Search Engine */}
-              <SearchEngine
-                setItems={setItems}
-                setlistItems={setlistItems}
-                setData={setData}
-                setCurrentPage={setCurrentPage}
-                paginationSize={paginationSize}
-                setDisplay={setDisplay}
-              />
+              <SearchEngine />
             </Card.Title>
             <Row>
               {items.map((item, index) => {
@@ -120,22 +115,12 @@ const MainPage = ({ global }) => {
           </Card.Body>
           <Card.Footer>
             {/** Pagination */}
-            <Pagination
-              paginationSize={paginationSize}
-              listItems={listItems}
-              setlistItems={setlistItems}
-              setItems={setItems}
-              data={data}
-              setData={setData}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              display={display}
-            />
+            <Pagination />
           </Card.Footer>
         </Card>
       </Col>
       <Col></Col>
-    </>
+    </ContextMainPage.Provider>
   )
 };
 
