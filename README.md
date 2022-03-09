@@ -19,13 +19,13 @@ Spotify API: https://developer.spotify.com/documentation/web-api/reference-beta/
 
 Spotify Authorization guide: https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
-Breakdown by component: 
-- Search engine 
-- Pagination 
-- Album information 
+Breakdown by component:
+- Search engine
+- Pagination
+- Album information
 - Route that leads to album information
 
-#
+## Description FR
 
 Objectif: Developper une petite application React.js qui utilise l'api Spotify
 
